@@ -1,0 +1,24 @@
+name: Private source access test
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out private delivery source
+        uses: actions/checkout@v4
+        with:
+          repository: Rota51/rota51-delivery-app
+          ref: main
+          path: delivery
+      - name: Confirm source
+        run: |
+          cd delivery
+          git rev-parse HEAD
+          test -f pubspec.yaml
